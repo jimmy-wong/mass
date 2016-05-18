@@ -1,5 +1,5 @@
 Module quadrupole
-  use parameters, only:lrzcs_0,d_lrzcs,a,q0    
+  use parameters, only:lrzcs_0,d_lrzcs,q0    
   implicit none
 Contains
 
@@ -10,10 +10,11 @@ Contains
   ! For using the parameters measured in fermi:
   !		(l, r, z, c, s) -> (l, r, z, c, s)*Rcn
   !				a(n)	->	a(n)/Rcn**n		n=0,1,2,3,4
-  subroutine cal_a (lrzcs0)
+  subroutine cal_a (lrzcs0,a)
     implicit none
 
     real,intent(in),dimension(5):: lrzcs0
+    real,intent(out),dimension(0:4)::a
     real(8) term0,term1,term2,term3,term4				! help variable
 
     real(8) l2,l3,l4,l5,l6,l7,z2,z3,z4,z5,z6
@@ -61,9 +62,9 @@ Contains
 
     lrzcs_out(1) = lrzcs0(1) + i1*d_lrzcs(1)
     lrzcs_out(2) = 1/sqrt(lrzcs_out(1)) + i2*d_lrzcs(2)
-    lrzcs_out(3) = lrzcs(3) + i3*d_lrzcs(3)
-    lrzcs_out(4) = -1/lrzcs_out(1)**2.5 + i4*d_lrzcs(4)
-    lrzcs_out(5) = lrzcs(5) + i5*d_lrzcs(5)
+    lrzcs_out(3) = lrzcs0(3) + i3*d_lrzcs(3)
+    lrzcs_out(4) = -1/lrzcs_out(1)**2.5 - 0.5 + i4*d_lrzcs(4)
+    lrzcs_out(5) = lrzcs0(5) + i5*d_lrzcs(5)
 
   end subroutine cal_grid
 
@@ -74,9 +75,12 @@ Contains
 
     integer,dimension(5),intent(in):: ii
     real :: l,r,z,s,c
+    real,dimension(0:4)::a
     real,dimension(5)::lrzcs
     call cal_grid(ii,lrzcs_0,lrzcs)                !calculate the real value of lrzcs
-    call cal_a(lrzcs)                           !calculate the parameters a0,a1,a2,a3,a4
+    call cal_a(lrzcs,a)                           !calculate the parameters a0,a1,a2,a3,a4
+    write(*,*) 'a=',a
+    write(*,*) 'lrzcs=',lrzcs
 
     l=lrzcs(1)
     r=lrzcs(2)
@@ -108,12 +112,15 @@ Contains
     implicit none
 
     integer,dimension(5),intent(in) :: ind1
-    real,parameter :: V0=10.                         !V0=15MeV
+    real,parameter :: V0=15.                         !V0=15MeV
     real :: q
     !real :: term
     q=cal_quad(ind1)
     cal_vbias=v0*(q0/q)**2
     !term=Cal_Vbias
+    write(*,*) 'q=',q
+    write(*,*) 'cal_vbias=',cal_vbias
+    write(*,*) 'ii=',ind1
   end function cal_vbias
 
 End Module quadrupole
