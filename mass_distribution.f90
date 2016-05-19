@@ -13,7 +13,7 @@ program Mass_Distribution
   call init_command_args
   i_counts=0
 !  open(50,file='/home/zmwang/Documents/mass_result/'//trim(command1)//'.txt',status='replace',action='write')
-  open(50,file='/home/zmwang/code/mass_dist/mass/'//trim(command1)//'_output.txt',action='write')
+  open(50,file='/home/zmwang/mass/'//trim(command1)//'_output.txt',action='write',asynchronous='yes')
   call read_the_data
 
   call random_seed()

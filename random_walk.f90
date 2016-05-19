@@ -8,6 +8,10 @@ subroutine Random_walk(AtomValue)
   real :: x,r0,r,l0,l
   integer,dimension(5)::ii
   ii=gs
+  if (omp_get_thread_num()==3) then
+     write(333,*) 'gs=',gs
+     write(333,*) 'E_excited=',E_excited
+  end if
   do
      l0=lrzcs_0(1)+d_lrzcs(1)*ii(1)
      r0=1/sqrt(l0) 
@@ -23,11 +27,13 @@ subroutine Random_walk(AtomValue)
      elseif(x<p5) then
         IDirection=5
      endif
-!!$     if (omp_get_thread_num()==3) then
-!!$        write(*,*) omp_get_thread_num()
-!!$        write(*,*) idirection
-!!$        write(*,*) p1,p2,p3,p4,p5
-!!$     end if
+     if (omp_get_thread_num()==3) then
+        
+        write(333,*) 'x=',x
+        write(333,*) 'omp_get_thread_num()=',omp_get_thread_num()
+        write(333,*) 'idirection:',idirection
+        write(333,*) p1,p2,p3,p4,p5
+     end if
      call Metropolis(IDirection,ii)
      r=(r0+ii(2)*d_lrzcs(2))*Rcn*(Acn**(1./3.))
      if (r<2.*Rcn) then
@@ -57,6 +63,11 @@ contains
     else
        tmp_ind(INP_IDirection)=ind(INP_IDirection)-1
     endif
+    if (omp_get_thread_num()==3) then
+       write(333,*) 'in metropolis:'
+       write(333,*) 'x=',x
+       write(333,*) 'tmp_ind=',tmp_ind
+    end if
     if (.not.exist(INP_IDirection,tmp_ind)) return
     if (E_exceed(tmp_ind)) return
 
@@ -64,6 +75,9 @@ contains
     !    if(x<exp((GetEnergyValue(ind)+Cal_Vbias(ind)-GetEnergyValue(tmp_ind)-Cal_Vbias(tmp_ind))/T)) then
     if(x<exp((GetEnergyValue(ind)-GetEnergyValue(tmp_ind))/T)) then
        ind(:)=tmp_ind(:)
+       if (omp_get_thread_num()==3) then
+          write(333,*) x<exp((GetEnergyValue(ind)-GetEnergyValue(tmp_ind))/T)
+       end if
     endif
   end subroutine Metropolis
 

@@ -5,13 +5,13 @@ module parameters
   real,dimension(5):: d_lrzcs, lrzcs_0, lrzcs
   integer,dimension(5):: n_lrzcs
   integer,save :: IDirection
-  integer,dimension(5),save :: gs
+  integer,dimension(5):: gs
   
   real,save :: Acn, rcn, q0
   
   integer :: output=10                    
-  real,save::E_excited
-!$omp threadprivate(E_excited,gs,idirection)
+  real::E_excited
+!$omp threadprivate(idirection)
   type Gridtype
      real:: E=1.e6
      real:: AH

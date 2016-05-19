@@ -16,7 +16,7 @@ subroutine read_the_data
   integer:: IU = 10
 
   ! - dimensions -
-  open(1,file='/home/zmwang/code/mass_dist/mass/Input/'//trim(command1)//'_Input.dat') 
+  open(1,file='/home/zmwang/mass/Input/'//trim(command1)//'_Input.dat') 
   read(1,NML=Grid);	rewind(1)
   read(1,NML=INPUT2)
   close(1)
@@ -25,7 +25,7 @@ subroutine read_the_data
   q0=cal_quad(gs)
 
   ! - Construct the grid -
-  open(IU,file='/home/zmwang/code/mass_dist/mass/'//trim(command1)//'.txt')
+  open(IU,file='/home/zmwang/mass/'//trim(command1)//'.txt')
 
   write(*,*) 'READING DATA'
 
