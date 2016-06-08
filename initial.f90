@@ -1,5 +1,5 @@
 module initial
-  use parameters, only: n_lrzcs,p1,p2,p3,p4,p5,gs
+  use parameters, only: n_lrzcs,p1,p2,p3,p4,p5
 
 contains
   subroutine init_params(n_lrzcs)

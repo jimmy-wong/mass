@@ -61,7 +61,7 @@ Contains
     i1=ii(1);i2=ii(2);i3=ii(3);i4=ii(4);i5=ii(5)
 
     lrzcs_out(1) = lrzcs0(1) + i1*d_lrzcs(1)
-    lrzcs_out(2) = 1/sqrt(lrzcs_out(1)) + i2*d_lrzcs(2)
+    lrzcs_out(2) = 1/sqrt(lrzcs_out(1)) + 0.05 + i2*d_lrzcs(2)
     lrzcs_out(3) = lrzcs0(3) + i3*d_lrzcs(3)
     lrzcs_out(4) = -1/lrzcs_out(1)**2.5 - 0.5 + i4*d_lrzcs(4)
     lrzcs_out(5) = lrzcs0(5) + i5*d_lrzcs(5)
@@ -79,8 +79,8 @@ Contains
     real,dimension(5)::lrzcs
     call cal_grid(ii,lrzcs_0,lrzcs)                !calculate the real value of lrzcs
     call cal_a(lrzcs,a)                           !calculate the parameters a0,a1,a2,a3,a4
-    write(*,*) 'a=',a
-    write(*,*) 'lrzcs=',lrzcs
+ !   write(333,'(a,5f5.2)') 'a=',a
+ !   write(333,'(a,5f5.2)') 'lrzcs=',lrzcs
 
     l=lrzcs(1)
     r=lrzcs(2)
@@ -114,15 +114,11 @@ Contains
     integer,dimension(5),intent(in) :: ind1
     real,parameter :: V0=15.                         !V0=15MeV
     real :: q
-    !real :: term
     q=cal_quad(ind1)
     cal_vbias=v0*(q0/q)**2
-    !term=Cal_Vbias
-    write(*,*) 'q=',q
-    write(*,*) 'cal_vbias=',cal_vbias
-    write(*,*) 'ii=',ind1
+!    write(333,*) 'q=',q
+!    write(333,*) 'ii=',ind1
+!    write(333,*) 'cal_vbias=',cal_vbias
   end function cal_vbias
 
-End Module quadrupole
-
-
+end module quadrupole

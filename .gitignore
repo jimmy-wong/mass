@@ -5,3 +5,8 @@
 *.mod
 mass
 fort*
+*openmp.f90
+/draw
+distribution
+nohup.out
+/parallel
